@@ -5,7 +5,7 @@ export default class LogoHeader extends Component {
   render() {
     return (
       <Container className='Banner'>
-        <Grid centered>
+        <Grid>
           <Grid.Column width={2}>
             <Image src='http://www.pngall.com/wp-content/uploads/2016/07/Twitter-Download-PNG.png' />
           </Grid.Column>
