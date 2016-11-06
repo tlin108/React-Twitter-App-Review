@@ -10,7 +10,7 @@ export default class LogoHeader extends Component {
             <Image src='http://www.pngall.com/wp-content/uploads/2016/07/Twitter-Download-PNG.png' />
           </Grid.Column>
           <Grid.Column verticalAlign='middle' width={8}>
-            <Header as='h1' className='BannerTitle'>Reviews for Twitter</Header>
+            <Header as='h1'>Reviews for Twitter</Header>
           </Grid.Column>
         </Grid>
       </Container>
