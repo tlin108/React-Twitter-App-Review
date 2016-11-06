@@ -17,6 +17,10 @@
   padding: 30px;
 }
 
+.BannerTitle {
+  font-size: 100px;
+}
+
 .SearchBar {
   width: 600px;
 }
