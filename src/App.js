@@ -7,7 +7,8 @@ import FilterableReviewTable from './components/FilterableReviewTable';
 
 export default class App extends Component {
   state = {
-    data: []
+    data: [],
+    search: input // added --------
   }
 
   loadData() {

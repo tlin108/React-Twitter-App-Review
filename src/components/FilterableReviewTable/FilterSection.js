@@ -11,7 +11,10 @@ export default class LogoHeader extends Component {
       <Grid>
         <Grid.Column floated='left' width={6}>
           <Header as='h4' floated='left'>Filter by keyword</Header>
-          <FilterByKeyword />
+          <FilterByKeyword 
+            filterText={this.props.filterText}
+            onUserInput={this.props.onUserInput}
+          />
         </Grid.Column>
         <Grid.Column floated='right' width={3}>
           <Header as='h4' floated='right'>Filter by rating</Header>
