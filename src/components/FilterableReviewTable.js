@@ -10,7 +10,7 @@ export default class FilterableReviewTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      filterText: '',
+      filterText: 'Hi',
     };
 
     this.handleUserInput = this.handleUserInput.bind(this);

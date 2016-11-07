@@ -3,16 +3,25 @@ import { Container } from 'semantic-ui-react';
 import './App.css';
 
 import LogoHeader from './components/LogoHeader';
-import FilterableReviewTable from './components/FilterableReviewTable';
+import SearchBar from './components/searchBar';
+import ReviewTable from './components/FilterableReviewTable/ReviewTable';
+
+import axios from 'axios';
+
 
 export default class App extends Component {
-  state = {
-    data: [],
-    search: input // added --------
+  constructor(props){
+    super(props);
+
+    this.state = {
+      data: [],
+      filterText: '' 
+    }
+    this.fetchData = this.fetchData.bind(this);
   }
 
-  loadData() {
-    fetch("http://exercises.appfigures.com/reviews")
+  loadData(input) {
+    fetch("http://exercises.appfigures.com/reviews?q=")
       .then(response => response.json())
       .then(json => {
         this.setState({
@@ -21,18 +30,34 @@ export default class App extends Component {
       });
   }
 
+  fetchData(input){
+    axios.get('http://exercises.appfigures.com/reviews?q=' + input)
+      .then((response) => {
+        console.log(input);
+        this.setState({
+          filterText: input,
+          data: response.data.reviews
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
   componentDidMount() {
-    this.loadData();
+    this.fetchData(''); // empty query first on first mount you could change this
   }
 
   render() {
     return (
       <Container className="App">
         <LogoHeader />
-        <FilterableReviewTable reviews={this.state.data}/>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        <SearchBar filterText={this.state.filterText} search={this.fetchData}/>
+        <br />
+        <ReviewTable 
+          reviews={this.state.data}
+          filterText={this.state.filterText}
+        /> 
       </Container>
     );
   }

@@ -25,9 +25,9 @@ export default class ReviewTable extends Component {
       lastDay = review.day;
     });
     return (
-      <table>
-        <tbody>{rows}</tbody>
-      </table>
+      <div>
+        {rows}
+      </div>
     );
   }
 }
