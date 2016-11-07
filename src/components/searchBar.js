@@ -1,6 +1,8 @@
 import React from 'react';
 import { Grid, Header, Icon, Input } from 'semantic-ui-react';
 
+import _ from 'lodash';
+
 const SearchBar = (props) => {
   // screw me i forgot this is just a functional component
   return (

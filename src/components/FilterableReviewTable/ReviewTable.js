@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import ReviewDateRow from './ReviewTable/ReviewDateRow';
 import ReviewCard from './ReviewTable/ReviewCard';
 
+import _ from 'lodash';
+
 export default class ReviewTable extends Component {
   render() {
     var reviews = [];
@@ -11,10 +13,11 @@ export default class ReviewTable extends Component {
       var dateTime = review.date.split('T');
       review.day = dateTime[0];
       review.time = dateTime[1];
-      review.stars = parseInt(review.stars);
+      review.stars = parseInt(review.stars, 0);
       reviews.push(review);
     }
-    
+    reviews= _.sortBy(reviews, ['day']).reverse();
+
     var rows = [];
     var lastDay = null;
     reviews.forEach(function(review) {   

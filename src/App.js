@@ -4,6 +4,7 @@ import './App.css';
 
 import LogoHeader from './components/LogoHeader';
 import SearchBar from './components/searchBar';
+import ReviewCount  from './components/FilterableReviewTable/ReviewCount';
 import ReviewTable from './components/FilterableReviewTable/ReviewTable';
 
 import axios from 'axios';
@@ -33,10 +34,10 @@ export default class App extends Component {
   fetchData(input){
     axios.get('http://exercises.appfigures.com/reviews?q=' + input)
       .then((response) => {
-        console.log(input);
+        //console.log(input);
         this.setState({
           filterText: input,
-          data: response.data.reviews
+          data: response.data
         });
       })
       .catch((error) => {
@@ -53,9 +54,10 @@ export default class App extends Component {
       <Container className="App">
         <LogoHeader />
         <SearchBar filterText={this.state.filterText} search={this.fetchData}/>
+        <ReviewCount page={this.state.data.this_page} total={this.state.data.total}/>
         <br />
         <ReviewTable 
-          reviews={this.state.data}
+          reviews={this.state.data.reviews}
           filterText={this.state.filterText}
         /> 
       </Container>
