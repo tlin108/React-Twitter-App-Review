@@ -20,13 +20,12 @@ export default class App extends Component {
       data: [],
       filterText: '' 
     }
-    this.fetchData = this.fetchData.bind(this);
-    this.updateFilter = this.updateFilter.bind(this);
-    this.applyFilter = _.debounce(this.applyFilter.bind(this), 500);
+    this.fetchData = _.debounce(this.fetchData.bind(this), 1000);
+    this.updateFilterText = this.updateFilterText.bind(this);
   }
 
-  fetchData(input) {
-    axios.get('http://exercises.appfigures.com/reviews?q=' + input)
+  fetchData() {
+    axios.get('http://exercises.appfigures.com/reviews?q=' + this.state.filterText)
       .then((response) => {
         this.setState({
           data: response.data,
@@ -39,16 +38,11 @@ export default class App extends Component {
       });
   }
 
-  updateFilter(input) {
+  updateFilterText(input) {
     this.setState({
       isLoading: true,
       filterText: input
-    });
-    this.applyFilter(input);
-  }
-
-  applyFilter(input) {
-    this.fetchData(input);
+    }, this.fetchData());
   }
 
   componentDidMount() {
@@ -60,7 +54,7 @@ export default class App extends Component {
       <Container className="App">
         <LogoHeader />
         <Grid>
-          <SearchBar filterText={this.state.filterText} search={this.updateFilter}/>
+          <SearchBar filterText={this.state.filterText} search={this.updateFilterText}/>
           <StarsFilter />
         </Grid>
         <ReviewCount 
