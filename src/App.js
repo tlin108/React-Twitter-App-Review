@@ -1,43 +1,37 @@
 import React, { Component } from 'react';
-import { Container } from 'semantic-ui-react';
+import { Container, Grid } from 'semantic-ui-react';
 import './App.css';
 
-import LogoHeader from './components/LogoHeader';
+import LogoHeader from './components/logoHeader';
 import SearchBar from './components/searchBar';
-import ReviewCount  from './components/FilterableReviewTable/ReviewCount';
-import ReviewTable from './components/FilterableReviewTable/ReviewTable';
+import StarsFilter from './components/starsFilter';
+import ReviewCount  from './components/reviewCount';
+import ReviewTable from './components/reviewTable';
 
 import axios from 'axios';
-
+import _ from 'lodash';
 
 export default class App extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
 
     this.state = {
+      isLoading: false,
       data: [],
       filterText: '' 
     }
     this.fetchData = this.fetchData.bind(this);
+    this.updateFilter = this.updateFilter.bind(this);
+    this.applyFilter = _.debounce(this.applyFilter.bind(this), 500);
   }
 
-  loadData(input) {
-    fetch("http://exercises.appfigures.com/reviews?q=")
-      .then(response => response.json())
-      .then(json => {
-        this.setState({
-          data: json,
-        });
-      });
-  }
-
-  fetchData(input){
+  fetchData(input) {
     axios.get('http://exercises.appfigures.com/reviews?q=' + input)
       .then((response) => {
-        //console.log(input);
         this.setState({
-          filterText: input,
-          data: response.data
+          data: response.data,
+          size: response.data.reviews.length,
+          isLoading: false
         });
       })
       .catch((error) => {
@@ -45,20 +39,39 @@ export default class App extends Component {
       });
   }
 
+  updateFilter(input) {
+    this.setState({
+      isLoading: true,
+      filterText: input
+    });
+    this.applyFilter(input);
+  }
+
+  applyFilter(input) {
+    this.fetchData(input);
+  }
+
   componentDidMount() {
-    this.fetchData(''); // empty query first on first mount you could change this
+    this.fetchData('');
   }
 
   render() {
     return (
       <Container className="App">
         <LogoHeader />
-        <SearchBar filterText={this.state.filterText} search={this.fetchData}/>
-        <ReviewCount page={this.state.data.this_page} total={this.state.data.total}/>
+        <Grid>
+          <SearchBar filterText={this.state.filterText} search={this.updateFilter}/>
+          <StarsFilter />
+        </Grid>
+        <ReviewCount 
+          isLoading={this.state.isLoading} 
+          size={this.state.size} 
+          total={this.state.data.total}/>
         <br />
         <ReviewTable 
           reviews={this.state.data.reviews}
           filterText={this.state.filterText}
+          isLoading={this.state.isLoading} 
         /> 
       </Container>
     );

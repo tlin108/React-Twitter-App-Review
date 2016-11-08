@@ -11,6 +11,8 @@ export default class ReviewCard extends Component {
           <Icon name='user' />
           {this.props.review.author}
           <Icon name='wait' />
+          {this.props.review.day}
+          &nbsp;
           {this.props.review.time}
           <Icon name='star' />
           {this.props.review.stars}

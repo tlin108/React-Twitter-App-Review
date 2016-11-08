@@ -17,7 +17,11 @@
   padding: 30px;
 }
 
+.ReviewCountHeader {
+  padding: 20px 0px 20px;
+}
+
 .SearchBar {
-  width: 400px;
+  width: 500px;
 }
 
