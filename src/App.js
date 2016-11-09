@@ -20,17 +20,26 @@ export default class App extends Component {
       isLoading: false,
       data: [],
       filterText: '',
+      stars: '1,2,3,4,5',
       pages: 1 
     }
-    this.fetchData = _.debounce(this.fetchData.bind(this), 1000);
+    this.fetchData = _.debounce(this.fetchData.bind(this), 500);
     this.updateFilterText = this.updateFilterText.bind(this);
     this.loadMore = this.loadMore.bind(this);
+    this.getFetchURL = this.getFetchURL.bind(this);
+  }
+
+  getFetchURL () {
+    var fetchURL = 'http://exercises.appfigures.com/reviews?stars=' +
+      this.state.stars + '&page=' + this.state.pages;
+    if (this.state.filterText !== ''){
+      fetchURL = fetchURL + '&q=' + this.state.filterText;
+    }
+    return fetchURL;
   }
 
   fetchData() {
-    axios.get('http://exercises.appfigures.com/reviews?q=' + 
-      this.state.filterText + '&page=' +
-      this.state.pages)
+    axios.get(this.getFetchURL())
       .then((response) => {
         if (this.state.pages > 1){
           var additionalReviews = _.concat(this.state.data.reviews, response.data.reviews);
