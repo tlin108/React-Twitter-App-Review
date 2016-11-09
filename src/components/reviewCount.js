@@ -9,7 +9,7 @@ const ReviewCount = (props) => {
   }
   return (
     <div className='ReviewCountHeader'>
-      <Header as='h3' floated='left'>Showing {props.size} of {props.total}</Header>
+      <Header as='h3' floated='left'>Showing {props.reviewsLength} of {props.total}</Header>
     </div>
   )
 };

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Dropdown, Header, Grid } from 'semantic-ui-react';
 
 const options = [
@@ -9,17 +9,18 @@ const options = [
   { text: 'Five Star', value: 5 },
 ]
 
-export default class FilterByRating extends Component {
-  render() {
-    return (
-        <Grid.Column floated='right' width={3}>
-          <Header as='h4' floated='right'>Filter by rating</Header>
-          <Dropdown
+const starsFilter = (props) => {
+  return (
+      <Grid.Column floated='right'>
+        <Header as='h4'>Filter by rating</Header>
+        <Dropdown
           selection
+          floating
           options={options}
           placeholder='All Ratings'
-        />
-        </Grid.Column>
-    );
-  }
+          />
+      </Grid.Column>
+  );
 }
+
+export default starsFilter;
