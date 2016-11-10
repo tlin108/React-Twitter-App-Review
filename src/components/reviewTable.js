@@ -5,6 +5,31 @@ import ReviewDateRow from './ReviewTable/reviewDateRow';
 import ReviewCard from './ReviewTable/reviewCard';
 
 import _ from 'lodash';
+import moment from 'moment';
+
+moment.updateLocale('en', {
+    relativeTime : {
+        future: "in %s",
+        past:   "%s ago",
+        s:  "Today",
+        m:  "Today",
+        mm: "Today",
+        h:  "Today",
+        hh: "Today",
+        d:  "Yesterday",
+        dd: function(number, withoutSuffix, key, isFuture){
+          if (number === 2){
+            return "Yesterday";
+          } else{
+            return number - 1 + " days ago";
+          }
+        },
+        M:  "A month ago",
+        MM: "%d months ago",
+        y:  "A year ago",
+        yy: "%d years ago"
+    }
+});
 
 export default class ReviewTable extends Component {
   render() {
@@ -35,13 +60,35 @@ export default class ReviewTable extends Component {
     reviews= _.sortBy(reviews, ['day', 'time']).reverse();
 
     var rows = [];
-    var lastDay = null;
-    reviews.forEach(function(review) {   
-      if (review.day !== lastDay) {
-        rows.push(<ReviewDateRow date={review.day} key={review.day} />);
+    var lastDateCategory = null;
+    var createdCategory = {
+      thisWeek: false,
+      pastWeek: false,
+      thisMonth: false
+    }
+
+    reviews.forEach(function(review) {
+      const reviewDay = moment(review.day).fromNow(true);
+
+      if (reviewDay !== lastDateCategory) {
+        rows.push(<ReviewDateRow date={reviewDay} key={reviewDay} />);
       }
+      /*
+      else if ((reviewDay.split(' ')[0] <= (moment().startOf('isoWeek').fromNow(true)).split(' ')[0])){
+        if(!createdCategory['thisWeek']){
+          rows.push(<ReviewDateRow date={'This Week'} key={'This Week'} />);
+          createdCategory['thisWeek'] = true;
+        }
+      }
+      else if ((reviewDay.split(' ')[0] <= (moment().add(1, 'weeks').fromNow(true)).split(' ')[0])){
+        if(!createdCategory['pastWeek']){
+          rows.push(<ReviewDateRow date={'Past Week'} key={'Past Week'} />);
+          createdCategory['pastWeek'] = true;
+        }
+      }
+      */
       rows.push(<ReviewCard review={review} key={review.id} />);
-      lastDay = review.day;
+      lastDateCategory = reviewDay;
     });
 
     return (

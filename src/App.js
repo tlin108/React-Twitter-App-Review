@@ -20,7 +20,7 @@ export default class App extends Component {
       isLoading: true,
       data: [],
       filterText: '',
-      stars: '1,2,3,4,5',
+      stars: '3',
       pages: 1 
     }
     this.getFetchURL = this.getFetchURL.bind(this);
