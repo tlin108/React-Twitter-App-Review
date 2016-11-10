@@ -32,7 +32,7 @@ export default class ReviewTable extends Component {
       review.stars = parseInt(review.stars, 0);
       reviews.push(review);
     })
-    reviews= _.sortBy(reviews, ['day']).reverse();
+    reviews= _.sortBy(reviews, ['day', 'time']).reverse();
 
     var rows = [];
     var lastDay = null;
