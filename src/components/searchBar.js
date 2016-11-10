@@ -1,9 +1,11 @@
 import React from 'react';
 import { Grid, Header, Icon, Input } from 'semantic-ui-react';
 
-import _ from 'lodash';
-
 const SearchBar = (props) => {
+  const handleFilterText = (event) => {
+    props.updateFilterText(event.target.value)
+  }
+
   return (
     <Grid.Column floated='left'>
       <Header as='h4' floated='left'>Filter by keyword</Header>
@@ -12,7 +14,7 @@ const SearchBar = (props) => {
         placeholder='Search...'
         className='SearchBar'
         value={props.filterText}
-        onChange={event => props.updateFilterText(event.target.value)}
+        onChange={handleFilterText}
       />
     </Grid.Column>
   )

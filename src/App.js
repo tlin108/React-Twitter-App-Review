@@ -17,19 +17,20 @@ export default class App extends Component {
     super(props);
 
     this.state = {
-      isLoading: false,
+      isLoading: true,
       data: [],
       filterText: '',
       stars: '1,2,3,4,5',
       pages: 1 
     }
+    this.getFetchURL = this.getFetchURL.bind(this);
     this.fetchData = _.debounce(this.fetchData.bind(this), 500);
     this.updateFilterText = this.updateFilterText.bind(this);
+    this.updateStarsRating = this.updateStarsRating.bind(this);
     this.loadMore = this.loadMore.bind(this);
-    this.getFetchURL = this.getFetchURL.bind(this);
   }
 
-  getFetchURL () {
+  getFetchURL() {
     var fetchURL = 'http://exercises.appfigures.com/reviews?stars=' +
       this.state.stars + '&page=' + this.state.pages;
     if (this.state.filterText !== ''){
@@ -63,12 +64,20 @@ export default class App extends Component {
       pages: 1
     }, this.fetchData());
   }
-  
-  loadMore() {
-    const addPage = this.state.pages + 1;
+
+  updateStarsRating(input) {
     this.setState({
       isLoading: true,
-      pages: addPage
+      stars: input,
+      pages: 1
+    }, this.fetchData());
+  }
+  
+  loadMore() {
+    const nextPage = this.state.pages + 1;
+    this.setState({
+      isLoading: true,
+      pages: nextPage
     }, this.fetchData());
   }
   
@@ -85,7 +94,10 @@ export default class App extends Component {
             filterText={this.state.filterText} 
             updateFilterText={this.updateFilterText}
           />
-          <StarsFilter />
+          <StarsFilter 
+            stars={this.state.stars}
+            updateStarsRating={this.updateStarsRating}
+          />
         </Grid>
         <ReviewCount 
           isLoading={this.state.isLoading} 
