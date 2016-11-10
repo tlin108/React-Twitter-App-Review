@@ -2,12 +2,8 @@ import React from 'react';
 import { Button } from 'semantic-ui-react';
 
 const loadMoreReviews = (props) => {
-  if(props.isLoading){
-    return <Button 
-            color='teal'
-            fluid
-            loading>
-          </Button>
+  if(props.isLoading || props.hasError){
+    return null;
   }
   return (
     <Button 

@@ -41,12 +41,16 @@ export default class ReviewTable extends Component {
 
               <Image src='http://semantic-ui.com/images/wireframe/paragraph.png' />
              </Segment>
-    } 
-    else if(this.props.reviews.length === 0){
+    } else if(this.props.reviews.length === 0){
       return <Segment>
               No result
              </Segment>
-    };
+    } else if (this.props.hasError){
+      return <Segment>
+              Error from server. Please try again.
+             </Segment>
+    }
+
 
     var reviews = [];
 
@@ -61,19 +65,21 @@ export default class ReviewTable extends Component {
 
     var rows = [];
     var lastDateCategory = null;
+    /*
     var createdCategory = {
       thisWeek: false,
       pastWeek: false,
       thisMonth: false
     }
-
-    reviews.forEach(function(review) {
+    */
+    console.log(this.props.reviews);
+    reviews.forEach((review) => {
       const reviewDay = moment(review.day).fromNow(true);
 
       if (reviewDay !== lastDateCategory) {
-        rows.push(<ReviewDateRow date={reviewDay} key={reviewDay} />);
+        rows.push(<ReviewDateRow date={reviewDay} key={reviewDay}/>);
       }
-      /*
+      /* trying to figure out best way to do date categorization 
       else if ((reviewDay.split(' ')[0] <= (moment().startOf('isoWeek').fromNow(true)).split(' ')[0])){
         if(!createdCategory['thisWeek']){
           rows.push(<ReviewDateRow date={'This Week'} key={'This Week'} />);
@@ -87,7 +93,7 @@ export default class ReviewTable extends Component {
         }
       }
       */
-      rows.push(<ReviewCard review={review} key={review.id} />);
+      rows.push(<ReviewCard review={review} key={review.id}/>);
       lastDateCategory = reviewDay;
     });
 
@@ -96,5 +102,5 @@ export default class ReviewTable extends Component {
         {rows}
       </div>
     );
-  }
+  }l
 }

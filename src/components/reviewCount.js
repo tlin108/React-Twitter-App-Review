@@ -1,11 +1,9 @@
 import React from 'react';
-import { Header, Loader } from 'semantic-ui-react';
+import { Header } from 'semantic-ui-react';
 
 const ReviewCount = (props) => {
-  if(props.isLoading){
-    return <div className='ReviewCountHeader'>
-            <Header as='h3' floated='left'><Loader active inline /></Header>
-           </div>
+  if(props.isLoading || props.hasError){
+    return null;
   }
   return (
     <div className='ReviewCountHeader'>

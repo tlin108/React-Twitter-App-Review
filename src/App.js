@@ -18,9 +18,10 @@ export default class App extends Component {
 
     this.state = {
       isLoading: true,
+      hasError: false,
       data: [],
       filterText: '',
-      stars: '3',
+      stars: '1,2,3,4,5',
       pages: 1 
     }
     this.getFetchURL = this.getFetchURL.bind(this);
@@ -53,7 +54,9 @@ export default class App extends Component {
         });
       })
       .catch((error) => {
-        console.log(error);
+        this.setState({
+          hasError: true
+        });
       });
   }
 
@@ -100,19 +103,22 @@ export default class App extends Component {
           />
         </Grid>
         <ReviewCount 
-          isLoading={this.state.isLoading} 
+          isLoading={this.state.isLoading}
+          hasError={this.state.hasError} 
           reviewsLength={this.state.reviewsLength} 
           total={this.state.data.total}
         />
         <br />
         <ReviewTable 
-          isLoading={this.state.isLoading} 
+          isLoading={this.state.isLoading}
+          hasError={this.state.hasError} 
           reviews={this.state.data.reviews}
           filterText={this.state.filterText}
         />
         <br />
         <LoadMoreReviews
-          isLoading={this.state.isLoading} 
+          isLoading={this.state.isLoading}
+          hasError={this.state.hasError} 
           loadMore={this.loadMore}
         />
       </Container>
