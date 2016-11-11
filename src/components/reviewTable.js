@@ -6,30 +6,7 @@ import ReviewCard from './ReviewTable/reviewCard';
 
 import _ from 'lodash';
 import moment from 'moment';
-
-moment.updateLocale('en', {
-    relativeTime : {
-        future: "in %s",
-        past:   "%s ago",
-        s:  "Today",
-        m:  "Today",
-        mm: "Today",
-        h:  "Today",
-        hh: "Today",
-        d:  "Yesterday",
-        dd: function(number, withoutSuffix, key, isFuture){
-          if (number === 2){
-            return "Yesterday";
-          } else{
-            return number - 1 + " days ago";
-          }
-        },
-        M:  "A month ago",
-        MM: "%d months ago",
-        y:  "A year ago",
-        yy: "%d years ago"
-    }
-});
+import dateChecker from '.././lib/dateChecker';
 
 export default class ReviewTable extends Component {
   render() {
@@ -43,7 +20,7 @@ export default class ReviewTable extends Component {
              </Segment>
     } else if(this.props.reviews.length === 0){
       return <Segment>
-              No result
+              No result.
              </Segment>
     } else if (this.props.hasError){
       return <Segment>
@@ -51,6 +28,31 @@ export default class ReviewTable extends Component {
              </Segment>
     }
 
+    const TODAY = moment().startOf('day');
+    const YESTERDAY = moment().subtract(1, 'days').startOf('day');
+    const THIS_WEEK = moment().startOf('isoWeek');
+    const PAST_WEEK = moment().subtract(1, 'weeks').startOf('isoWeek');
+    const THIS_MONTH = moment().startOf('month');
+    const PAST_MONTH = moment().subtract(1, 'month').startOf('month');
+
+    const isToday = (momentDate) => {
+      return momentDate.isSame(TODAY, 'd');
+    }
+    const isYesterday = (momentDate) => {
+      return momentDate.isSame(YESTERDAY, 'd');
+    }
+    const isThisWeek = (momentDate) => {
+      return momentDate.isSameOrAfter(THIS_WEEK);
+    }
+    const isPastWeek = (momentDate) => {
+      return momentDate.isSameOrAfter(PAST_WEEK);
+    }
+    const isThisMonth = (momentDate) => {
+      return momentDate.isSameOrAfter(THIS_MONTH);
+    }
+    const isPastMonth = (momentDate) => {
+      return momentDate.isSameOrAfter(PAST_MONTH);
+    }
 
     var reviews = [];
 
@@ -64,37 +66,47 @@ export default class ReviewTable extends Component {
     reviews= _.sortBy(reviews, ['day', 'time']).reverse();
 
     var rows = [];
-    var lastDateCategory = null;
-    /*
-    var createdCategory = {
-      thisWeek: false,
-      pastWeek: false,
-      thisMonth: false
-    }
-    */
-    console.log(this.props.reviews);
-    reviews.forEach((review) => {
-      const reviewDay = moment(review.day).fromNow(true);
 
-      if (reviewDay !== lastDateCategory) {
-        rows.push(<ReviewDateRow date={reviewDay} key={reviewDay}/>);
+    var dateCategoryChecker = {
+      "Today": false,
+      "Yesterday": false,
+      "This Week": false,
+      "Past Week": false,
+      "This Month": false,
+      "Past Month": false,
+    }
+
+    const addDateCategory = (dateCategory) => {
+      if (!dateCategoryChecker[dateCategory]){
+        rows.push(<ReviewDateRow date={dateCategory} key={dateCategory}/>);
+        dateCategoryChecker[dateCategory] = true;
       }
-      /* trying to figure out best way to do date categorization 
-      else if ((reviewDay.split(' ')[0] <= (moment().startOf('isoWeek').fromNow(true)).split(' ')[0])){
-        if(!createdCategory['thisWeek']){
-          rows.push(<ReviewDateRow date={'This Week'} key={'This Week'} />);
-          createdCategory['thisWeek'] = true;
+    }
+
+    var lastDateFormat;
+    reviews.forEach((review) => {
+      const reviewDay = moment(review.day);
+
+      if (dateChecker.isToday(reviewDay)){
+        addDateCategory("Today");
+      } else if (dateChecker.isYesterday(reviewDay)){
+        addDateCategory("Yesterday");
+      } else if (dateChecker.isThisWeek(reviewDay)){
+        addDateCategory("This Week");
+      } else if (dateChecker.isPastWeek(reviewDay)){
+        addDateCategory("Past Week");
+      } else if (dateChecker.isThisMonth(reviewDay)){
+        addDateCategory("This Month");
+      } else if (dateChecker.isPastMonth(reviewDay)){
+        addDateCategory("Past Month");
+      } else{
+        const dateFormat = reviewDay.format("MMM YYYY");
+        if (dateFormat !== lastDateFormat){
+          rows.push(<ReviewDateRow date={dateFormat} key={dateFormat}/>);
+          lastDateFormat = dateFormat;
         }
       }
-      else if ((reviewDay.split(' ')[0] <= (moment().add(1, 'weeks').fromNow(true)).split(' ')[0])){
-        if(!createdCategory['pastWeek']){
-          rows.push(<ReviewDateRow date={'Past Week'} key={'Past Week'} />);
-          createdCategory['pastWeek'] = true;
-        }
-      }
-      */
       rows.push(<ReviewCard review={review} key={review.id}/>);
-      lastDateCategory = reviewDay;
     });
 
     return (
@@ -102,5 +114,5 @@ export default class ReviewTable extends Component {
         {rows}
       </div>
     );
-  }l
+  }
 }
