@@ -6,7 +6,6 @@ import ReviewCard from './ReviewTable/reviewCard';
 
 import _ from 'lodash';
 import moment from 'moment';
-import dateChecker from '.././lib/dateChecker';
 
 export default class ReviewTable extends Component {
   render() {
@@ -87,17 +86,17 @@ export default class ReviewTable extends Component {
     reviews.forEach((review) => {
       const reviewDay = moment(review.day);
 
-      if (dateChecker.isToday(reviewDay)){
+      if (isToday(reviewDay)){
         addDateCategory("Today");
-      } else if (dateChecker.isYesterday(reviewDay)){
+      } else if (isYesterday(reviewDay)){
         addDateCategory("Yesterday");
-      } else if (dateChecker.isThisWeek(reviewDay)){
+      } else if (isThisWeek(reviewDay)){
         addDateCategory("This Week");
-      } else if (dateChecker.isPastWeek(reviewDay)){
+      } else if (isPastWeek(reviewDay)){
         addDateCategory("Past Week");
-      } else if (dateChecker.isThisMonth(reviewDay)){
+      } else if (isThisMonth(reviewDay)){
         addDateCategory("This Month");
-      } else if (dateChecker.isPastMonth(reviewDay)){
+      } else if (isPastMonth(reviewDay)){
         addDateCategory("Past Month");
       } else{
         const dateFormat = reviewDay.format("MMM YYYY");
