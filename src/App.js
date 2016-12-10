@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Container, Grid } from 'semantic-ui-react';
 import './App.css';
+import API_KEY from '../config/config.js';
 
 import LogoHeader from './components/logoHeader';
 import SearchBar from './components/searchBar';
@@ -32,7 +33,7 @@ export default class App extends Component {
   }
 
   getFetchURL() {
-    var fetchURL = 'http://exercises.appfigures.com/reviews?stars=' +
+    var fetchURL = API_KEY +
       this.state.stars + '&page=' + this.state.pages;
     if (this.state.filterText !== ''){
       fetchURL = fetchURL + '&q=' + this.state.filterText;
