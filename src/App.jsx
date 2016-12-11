@@ -3,12 +3,12 @@ import { Container, Grid } from 'semantic-ui-react';
 import './App.css';
 import API_KEY from '../config/config.js';
 
-import LogoHeader from './components/logoHeader';
-import SearchBar from './components/searchBar';
-import StarsFilter from './components/starsFilter';
-import ReviewCount  from './components/reviewCount';
-import ReviewTable from './components/reviewTable';
-import LoadMoreReviews from './components/loadMoreReviews';
+import LogoHeader from './components/LogoHeader';
+import SearchBar from './components/SearchBar';
+import StarsFilter from './components/StarsFilter';
+import ReviewCount  from './components/ReviewCount';
+import ReviewTable from './components/ReviewTable';
+import LoadMoreReviews from './components/LoadMoreReviews';
 
 import axios from 'axios';
 import _ from 'lodash';

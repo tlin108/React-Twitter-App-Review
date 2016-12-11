@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Dimmer, Loader, Image, Segment } from 'semantic-ui-react'
 
-import ReviewDateRow from './ReviewTable/reviewDateRow';
-import ReviewCard from './ReviewTable/reviewCard';
+import ReviewDateRow from './ReviewTable/ReviewDateRow';
+import ReviewCard from './ReviewTable/ReviewCard';
 
 import _ from 'lodash';
 import moment from 'moment';
