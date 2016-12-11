@@ -1,7 +1,7 @@
 import React from 'react';
 import { Segment } from 'semantic-ui-react';
 
-const ReviewDateRow = (props) => {
+function ReviewDateRow(props) {
   return (
     <Segment tertiary>
       {props.date}

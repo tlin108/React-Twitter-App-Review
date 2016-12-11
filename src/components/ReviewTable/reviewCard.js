@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, Icon, Rating } from 'semantic-ui-react';
 
-const ReviewCard = (props) => {
+function ReviewCard(props) {
   return (
     <Card fluid>
       <Card.Content header={props.review.title} />

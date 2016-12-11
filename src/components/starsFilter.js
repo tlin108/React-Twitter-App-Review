@@ -1,10 +1,11 @@
 import React from 'react';
 import { Header, Grid } from 'semantic-ui-react';
 
-const starsFilter = (props) => {
-  const handleStarsFilter = (event) => {
+function StarsFilter(props) {
+  function handleStarsFilter (event){
     props.updateStarsRating(event.target.value);
   }
+
   return (
     <Grid.Column floated='right'>
       <Header as='h4'>Filter by rating</Header>
@@ -20,4 +21,4 @@ const starsFilter = (props) => {
   );
 }
 
-export default starsFilter;
+export default StarsFilter;

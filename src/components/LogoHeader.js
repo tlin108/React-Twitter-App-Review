@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Header, Grid, Image } from 'semantic-ui-react';
 
-const LogoHeader = () => {
+function LogoHeader() {
   return (
     <Container className='Banner'>
       <Grid>

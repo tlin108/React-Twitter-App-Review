@@ -1,7 +1,7 @@
 import React from 'react';
 import { Header } from 'semantic-ui-react';
 
-const ReviewCount = (props) => {
+function ReviewCount(props) {
   if(props.isLoading || props.hasError){
     return null;
   }

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Grid, Header, Icon, Input } from 'semantic-ui-react';
 
-const SearchBar = (props) => {
-  const handleFilterText = (event) => {
+function SearchBar(props) {
+  function handleFilterText(event) {
     props.updateFilterText(event.target.value)
   }
 
@@ -18,6 +18,6 @@ const SearchBar = (props) => {
       />
     </Grid.Column>
   )
-};
+}
 
 export default SearchBar;
