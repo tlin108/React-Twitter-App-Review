@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from 'semantic-ui-react';
 
-const loadMoreReviews = (props) => {
+function loadMoreReviews(props) {
   if(props.isLoading || props.hasError){
     return null;
   }
