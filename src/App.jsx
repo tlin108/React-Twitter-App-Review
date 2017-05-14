@@ -5,7 +5,7 @@ import API_KEY from '../config/config.js';
 
 import LogoHeader from './components/LogoHeader';
 import SearchBar from './components/Filters/SearchBar';
-import StarsFilter from './components/StarsFilter';
+import StarsSelect from './components/Filters/StarsSelect';
 import ReviewCount  from './components/ReviewCount';
 import ReviewTable from './components/ReviewTable';
 import LoadMoreReviews from './components/LoadMoreReviews';
@@ -99,8 +99,7 @@ export default class App extends Component {
             filterText={this.state.filterText} 
             updateFilterText={this.updateFilterText}
           />
-          <StarsFilter 
-            stars={this.state.stars}
+          <StarsSelect 
             updateStarsRating={this.updateStarsRating}
           />
         </Grid>
