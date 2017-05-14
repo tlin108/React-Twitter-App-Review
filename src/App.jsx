@@ -4,7 +4,7 @@ import './App.css';
 import API_KEY from '../config/config.js';
 
 import LogoHeader from './components/LogoHeader';
-import SearchBar from './components/SearchBar';
+import SearchBar from './components/Filters/SearchBar';
 import StarsFilter from './components/StarsFilter';
 import ReviewCount  from './components/ReviewCount';
 import ReviewTable from './components/ReviewTable';
@@ -82,11 +82,12 @@ export default class App extends Component {
     this.setState({
       isLoading: true,
       pages: nextPage
-    }, this.fetchData());
+    });
+    this.fetchData();
   }
   
   componentDidMount() {
-    this.fetchData('');
+    this.fetchData();
   }
 
   render() {
