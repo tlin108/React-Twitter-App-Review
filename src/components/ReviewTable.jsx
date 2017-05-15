@@ -1,14 +1,50 @@
 import React, { Component } from 'react';
-import { Button, Dimmer, Header, Loader, Image, Segment } from 'semantic-ui-react'
+import { Button, Dimmer, Header, Loader, Image, Segment } from 'semantic-ui-react';
+import _ from 'lodash';
+import moment from 'moment';
 
 import DateCategoryRow from './ReviewTable/DateCategoryRow';
 import ReviewCard from './ReviewTable/ReviewCard';
 
-import _ from 'lodash';
-import moment from 'moment';
+// date time categorization initialization
+const TODAY = moment().startOf('day');
+const YESTERDAY = moment().subtract(1, 'days').startOf('day');
+const THIS_WEEK = moment().startOf('isoWeek');
+const LAST_WEEK = moment().subtract(1, 'weeks').startOf('isoWeek');
+const THIS_MONTH = moment().startOf('month');
+const LAST_MONTH = moment().subtract(1, 'month').startOf('month');
 
-export default class ReviewTable extends Component {
+const isToday = (momentDate) => {
+  return momentDate.isSame(TODAY, 'd');
+}
+const isYesterday = (momentDate) => {
+  return momentDate.isSame(YESTERDAY, 'd');
+}
+const isThisWeek = (momentDate) => {
+  return momentDate.isSameOrAfter(THIS_WEEK);
+}
+const isLastWeek = (momentDate) => {
+  return momentDate.isSameOrAfter(LAST_WEEK);
+}
+const isThisMonth = (momentDate) => {
+  return momentDate.isSameOrAfter(THIS_MONTH);
+}
+const isLastMonth = (momentDate) => {
+  return momentDate.isSameOrAfter(LAST_MONTH);
+}
+
+var dateCategoryChecker = {
+  "Today": false,
+  "Yesterday": false,
+  "This Week": false,
+  "Last Week": false,
+  "This Month": false,
+  "Last Month": false,
+}
+
+class ReviewTable extends Component {
   render() {
+    // loading, no result, error handling
     if (this.props.isLoading || this.props.reviews === undefined){
       return <Segment>
               <Dimmer active inverted>
@@ -27,34 +63,8 @@ export default class ReviewTable extends Component {
              </Segment>
     }
 
-    const TODAY = moment().startOf('day');
-    const YESTERDAY = moment().subtract(1, 'days').startOf('day');
-    const THIS_WEEK = moment().startOf('isoWeek');
-    const PAST_WEEK = moment().subtract(1, 'weeks').startOf('isoWeek');
-    const THIS_MONTH = moment().startOf('month');
-    const PAST_MONTH = moment().subtract(1, 'month').startOf('month');
-
-    const isToday = (momentDate) => {
-      return momentDate.isSame(TODAY, 'd');
-    }
-    const isYesterday = (momentDate) => {
-      return momentDate.isSame(YESTERDAY, 'd');
-    }
-    const isThisWeek = (momentDate) => {
-      return momentDate.isSameOrAfter(THIS_WEEK);
-    }
-    const isPastWeek = (momentDate) => {
-      return momentDate.isSameOrAfter(PAST_WEEK);
-    }
-    const isThisMonth = (momentDate) => {
-      return momentDate.isSameOrAfter(THIS_MONTH);
-    }
-    const isPastMonth = (momentDate) => {
-      return momentDate.isSameOrAfter(PAST_MONTH);
-    }
-
+    // parsing and sorting reviews based on increasing time spans
     var reviews = [];
-
     this.props.reviews.forEach((review) => {
       var dateTime = review.date.split('T');
       review.day = dateTime[0];
@@ -64,17 +74,9 @@ export default class ReviewTable extends Component {
     })
     reviews= _.sortBy(reviews, ['day', 'time']).reverse();
 
+
+
     var rows = [];
-
-    var dateCategoryChecker = {
-      "Today": false,
-      "Yesterday": false,
-      "This Week": false,
-      "Past Week": false,
-      "This Month": false,
-      "Past Month": false,
-    }
-
     const addDateCategory = (dateCategory) => {
       if (!dateCategoryChecker[dateCategory]){
         rows.push(<DateCategoryRow date={dateCategory} key={dateCategory}/>);
@@ -92,14 +94,15 @@ export default class ReviewTable extends Component {
         addDateCategory("Yesterday");
       } else if (isThisWeek(reviewDay)){
         addDateCategory("This Week");
-      } else if (isPastWeek(reviewDay)){
-        addDateCategory("Past Week");
+      } else if (isLastWeek(reviewDay)){
+        addDateCategory("Last Week");
       } else if (isThisMonth(reviewDay)){
         addDateCategory("This Month");
-      } else if (isPastMonth(reviewDay)){
-        addDateCategory("Past Month");
+      } else if (isLastMonth(reviewDay)){
+        addDateCategory("Last Month");
       } else{
         const dateFormat = reviewDay.format("MMM YYYY");
+        // add new date category 
         if (dateFormat !== lastDateFormat){
           rows.push(<DateCategoryRow date={dateFormat} key={dateFormat}/>);
           lastDateFormat = dateFormat;
@@ -128,3 +131,5 @@ export default class ReviewTable extends Component {
     );
   }
 }
+
+export default ReviewTable;

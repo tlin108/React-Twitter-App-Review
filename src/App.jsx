@@ -52,7 +52,11 @@ export default class App extends Component {
         hasError: false
       });
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      this.setState({
+        hasError: true
+      });
+    });
   }
 
   updateFilterText(filterText) {
