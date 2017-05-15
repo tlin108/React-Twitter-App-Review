@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Dimmer, Header, Loader, Image, Segment } from 'semantic-ui-react'
 
-import ReviewDateRow from './ReviewTable/ReviewDateRow';
+import DateCategoryRow from './ReviewTable/DateCategoryRow';
 import ReviewCard from './ReviewTable/ReviewCard';
 
 import _ from 'lodash';
@@ -77,7 +77,7 @@ export default class ReviewTable extends Component {
 
     const addDateCategory = (dateCategory) => {
       if (!dateCategoryChecker[dateCategory]){
-        rows.push(<ReviewDateRow date={dateCategory} key={dateCategory}/>);
+        rows.push(<DateCategoryRow date={dateCategory} key={dateCategory}/>);
         dateCategoryChecker[dateCategory] = true;
       }
     }
@@ -101,7 +101,7 @@ export default class ReviewTable extends Component {
       } else{
         const dateFormat = reviewDay.format("MMM YYYY");
         if (dateFormat !== lastDateFormat){
-          rows.push(<ReviewDateRow date={dateFormat} key={dateFormat}/>);
+          rows.push(<DateCategoryRow date={dateFormat} key={dateFormat}/>);
           lastDateFormat = dateFormat;
         }
       }
@@ -111,7 +111,7 @@ export default class ReviewTable extends Component {
     return (
       <div>
         <div className='ReviewCountHeader'>
-          <Header as='h3' floated='left'>Showing {this.props.reviews.length} reviews of {this.props.totalReviews}</Header>
+          <Header as='h3' floated='left'>Showing {this.props.reviews.length} reviews of {this.props.totalReviewsCount}</Header>
         </div>
         <br />
         <div>

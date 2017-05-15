@@ -2,19 +2,21 @@ import React from 'react';
 import { Card, Icon, Rating } from 'semantic-ui-react';
 
 function ReviewCard(props) {
+  const { title, review, author, day, time, stars } = props.review;
   return (
     <Card fluid>
-      <Card.Content header={props.review.title} />
-      <Card.Content description={props.review.review} />
+      <Card.Content header={title} />
+      <Card.Content description={review} />
       <Card.Content extra>
         <Icon name='user' />
-        {props.review.author}
+        {author}
+        &nbsp;
         <Icon name='wait' />
-        {props.review.day}
+        {day}
         &nbsp;
-        {props.review.time}
+        {time}
         &nbsp;
-        <Rating maxRating={5} defaultRating={props.review.stars} icon='star' disabled/>
+        <Rating maxRating={5} defaultRating={stars} icon='star' disabled/>
       </Card.Content>
     </Card>
   );

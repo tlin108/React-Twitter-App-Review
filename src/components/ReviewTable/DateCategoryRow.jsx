@@ -1,7 +1,7 @@
 import React from 'react';
 import { Segment } from 'semantic-ui-react';
 
-function ReviewDateRow(props) {
+function DateCategoryRow(props) {
   return (
     <Segment tertiary>
       {props.date}
@@ -9,4 +9,4 @@ function ReviewDateRow(props) {
   );
 }
 
-export default ReviewDateRow;
+export default DateCategoryRow;

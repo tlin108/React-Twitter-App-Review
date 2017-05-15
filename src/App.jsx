@@ -103,8 +103,7 @@ export default class App extends Component {
           isLoading={this.state.isLoading}
           hasError={this.state.hasError} 
           reviews={this.state.data.reviews}
-          filterText={this.state.filterText}
-          totalReviews={this.state.data.total}
+          totalReviewsCount={this.state.data.total}
           loadMoreReviews={this.loadMoreReviews}
         />
       </Container>
