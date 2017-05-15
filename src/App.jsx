@@ -6,7 +6,6 @@ import API_KEY from '../config/config.js';
 import LogoHeader from './components/LogoHeader';
 import SearchBar from './components/Filters/SearchBar';
 import StarsSelect from './components/Filters/StarsSelect';
-import ReviewCount  from './components/ReviewCount';
 import ReviewTable from './components/ReviewTable';
 import LoadMoreReviews from './components/LoadMoreReviews';
 
@@ -101,18 +100,12 @@ export default class App extends Component {
             updateStarsRating={this.updateStarsRating}
           />
         </Grid>
-        <ReviewCount 
-          isLoading={this.state.isLoading}
-          hasError={this.state.hasError} 
-          reviewsLength={this.state.reviewsLength} 
-          total={this.state.data.total}
-        />
-        <br />
         <ReviewTable 
           isLoading={this.state.isLoading}
           hasError={this.state.hasError} 
           reviews={this.state.data.reviews}
           filterText={this.state.filterText}
+          totalReviews={this.state.data.total}
         />
         <br />
         <LoadMoreReviews

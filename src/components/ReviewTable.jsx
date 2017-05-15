@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Dimmer, Loader, Image, Segment } from 'semantic-ui-react'
+import { Dimmer, Header, Loader, Image, Segment } from 'semantic-ui-react'
 
 import ReviewDateRow from './ReviewTable/ReviewDateRow';
 import ReviewCard from './ReviewTable/ReviewCard';
@@ -110,7 +110,13 @@ export default class ReviewTable extends Component {
 
     return (
       <div>
-        {rows}
+        <div className='ReviewCountHeader'>
+          <Header as='h3' floated='left'>Showing {this.props.reviews.length} reviews of {this.props.totalReviews}</Header>
+        </div>
+        <br />
+        <div>
+          {rows}
+        </div>
       </div>
     );
   }
