@@ -10,7 +10,6 @@ import ReviewCount  from './components/ReviewCount';
 import ReviewTable from './components/ReviewTable';
 import LoadMoreReviews from './components/LoadMoreReviews';
 
-import axios from 'axios';
 import _ from 'lodash';
 
 export default class App extends Component {
@@ -22,7 +21,7 @@ export default class App extends Component {
       hasError: false,
       data: [],
       filterText: '',
-      stars: '1,2,3,4,5',
+      starsSelect: '1,2,3,4,5',
       pages: 1 
     }
     this.getFetchURL = this.getFetchURL.bind(this);
@@ -34,7 +33,7 @@ export default class App extends Component {
 
   getFetchURL() {
     var fetchURL = API_KEY +
-      this.state.stars + '&page=' + this.state.pages;
+      this.state.starsSelect + '&page=' + this.state.pages;
     if (this.state.filterText !== ''){
       fetchURL = fetchURL + '&q=' + this.state.filterText;
     }
@@ -42,39 +41,38 @@ export default class App extends Component {
   }
 
   fetchData() {
-    axios.get(this.getFetchURL())
-      .then((response) => {
-        if (this.state.pages > 1){
-          var additionalReviews = _.concat(this.state.data.reviews, response.data.reviews);
-          response.data.reviews = additionalReviews;
-        }
-        this.setState({
-          data: response.data,
-          reviewsLength: response.data.reviews.length,
-          isLoading: false,
-        });
-      })
-      .catch((error) => {
-        this.setState({
-          hasError: true
-        });
+    fetch(this.getFetchURL())
+    .then(res => res.json())
+    .then(data => {
+      if (this.state.pages > 1){
+          var additionalReviews = _.concat(this.state.data.reviews, data.reviews);
+          data.reviews = additionalReviews;
+      }
+      this.setState({
+        data: data,
+        isLoading: false,
+        hasError: false
       });
+    })
+    .catch(err => console.log(err));
   }
 
-  updateFilterText(input) {
+  updateFilterText(filterText) {
     this.setState({
       isLoading: true,
-      filterText: input,
+      filterText,
       pages: 1
-    }, this.fetchData());
+    });
+    this.fetchData();
   }
 
-  updateStarsRating(input) {
+  updateStarsRating(starsSelect) {
     this.setState({
       isLoading: true,
-      stars: input,
+      starsSelect,
       pages: 1
-    }, this.fetchData());
+    });
+    this.fetchData();
   }
   
   loadMore() {
