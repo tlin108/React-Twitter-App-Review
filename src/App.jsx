@@ -7,7 +7,6 @@ import LogoHeader from './components/LogoHeader';
 import SearchBar from './components/Filters/SearchBar';
 import StarsSelect from './components/Filters/StarsSelect';
 import ReviewTable from './components/ReviewTable';
-import LoadMoreReviews from './components/LoadMoreReviews';
 
 import _ from 'lodash';
 
@@ -27,7 +26,7 @@ export default class App extends Component {
     this.fetchData = _.debounce(this.fetchData.bind(this), 500);
     this.updateFilterText = this.updateFilterText.bind(this);
     this.updateStarsRating = this.updateStarsRating.bind(this);
-    this.loadMore = this.loadMore.bind(this);
+    this.loadMoreReviews = this.loadMoreReviews.bind(this);
   }
 
   getFetchURL() {
@@ -74,7 +73,7 @@ export default class App extends Component {
     this.fetchData();
   }
   
-  loadMore() {
+  loadMoreReviews() {
     const nextPage = this.state.pages + 1;
     this.setState({
       isLoading: true,
@@ -106,12 +105,7 @@ export default class App extends Component {
           reviews={this.state.data.reviews}
           filterText={this.state.filterText}
           totalReviews={this.state.data.total}
-        />
-        <br />
-        <LoadMoreReviews
-          isLoading={this.state.isLoading}
-          hasError={this.state.hasError} 
-          loadMore={this.loadMore}
+          loadMoreReviews={this.loadMoreReviews}
         />
       </Container>
     );

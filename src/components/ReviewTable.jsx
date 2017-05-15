@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Dimmer, Header, Loader, Image, Segment } from 'semantic-ui-react'
+import { Button, Dimmer, Header, Loader, Image, Segment } from 'semantic-ui-react'
 
 import ReviewDateRow from './ReviewTable/ReviewDateRow';
 import ReviewCard from './ReviewTable/ReviewCard';
@@ -117,6 +117,13 @@ export default class ReviewTable extends Component {
         <div>
           {rows}
         </div>
+        <br />
+        <Button 
+          color='teal'
+          fluid
+          onClick={this.props.loadMoreReviews} >
+          Load More Reviews
+        </Button>
       </div>
     );
   }
