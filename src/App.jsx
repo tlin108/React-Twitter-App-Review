@@ -17,37 +17,38 @@ export default class App extends Component {
     this.state = {
       isLoading: true,
       hasError: false,
-      data: [],
+      reviews: [],
       filterText: '',
       starsSelect: '1,2,3,4,5',
+      totalReviewsCount: 0,
       pages: 1 
     }
-    this.getFetchURL = this.getFetchURL.bind(this);
+    this.getAPIroute = this.getAPIroute.bind(this);
     this.fetchData = _.debounce(this.fetchData.bind(this), 500);
     this.updateFilterText = this.updateFilterText.bind(this);
     this.updateStarsRating = this.updateStarsRating.bind(this);
     this.loadMoreReviews = this.loadMoreReviews.bind(this);
   }
 
-  getFetchURL() {
-    let fetchURL = API_KEY +
-      this.state.starsSelect + '&page=' + this.state.pages;
-    if (this.state.filterText !== ''){
-      fetchURL = fetchURL + '&q=' + this.state.filterText;
-    }
-    return fetchURL;
+  componentDidMount() {
+    this.fetchData();
+  }
+
+  getAPIroute() {
+    const { starsSelect, pages, filterText } = this.state;
+    const query = this.state.filterText ? "&q=" + filterText : "";
+    const APIRoute = `${API_KEY}?stars=${starsSelect}&page=${pages}${query}`;
+    return APIRoute;
   }
 
   fetchData() {
-    fetch(this.getFetchURL())
+    fetch(this.getAPIroute())
     .then(res => res.json())
     .then(data => {
-      if (this.state.pages > 1){
-          let additionalReviews = _.concat(this.state.data.reviews, data.reviews);
-          data.reviews = additionalReviews;
-      }
+      const totalReviews = this.state.pages > 1 ? [...this.state.reviews, ...data.reviews] : data.reviews;
       this.setState({
-        data: data,
+        reviews: totalReviews,
+        totalReviewsCount: data.total,
         isLoading: false,
         hasError: false
       });
@@ -85,10 +86,6 @@ export default class App extends Component {
     });
     this.fetchData();
   }
-  
-  componentDidMount() {
-    this.fetchData();
-  }
 
   render() {
     return (
@@ -106,8 +103,8 @@ export default class App extends Component {
         <ReviewTable 
           isLoading={this.state.isLoading}
           hasError={this.state.hasError} 
-          reviews={this.state.data.reviews}
-          totalReviewsCount={this.state.data.total}
+          reviews={this.state.reviews}
+          totalReviewsCount={this.state.totalReviewsCount}
           loadMoreReviews={this.loadMoreReviews}
         />
       </Container>
