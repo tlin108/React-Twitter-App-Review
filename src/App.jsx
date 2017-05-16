@@ -24,14 +24,14 @@ export default class App extends Component {
       pages: 1 
     }
     this.getAPIroute = this.getAPIroute.bind(this);
-    this.fetchData = _.debounce(this.fetchData.bind(this), 500);
+    this.fetchReviews = _.debounce(this.fetchReviews.bind(this), 500);
     this.updateFilterText = this.updateFilterText.bind(this);
     this.updateStarsRating = this.updateStarsRating.bind(this);
     this.loadMoreReviews = this.loadMoreReviews.bind(this);
   }
 
   componentDidMount() {
-    this.fetchData();
+    this.fetchReviews();
   }
 
   getAPIroute() {
@@ -41,7 +41,7 @@ export default class App extends Component {
     return APIRoute;
   }
 
-  fetchData() {
+  fetchReviews() {
     fetch(this.getAPIroute())
     .then(res => res.json())
     .then(data => {
@@ -66,7 +66,7 @@ export default class App extends Component {
       filterText,
       pages: 1
     });
-    this.fetchData();
+    this.fetchReviews();
   }
 
   updateStarsRating(starsSelect) {
@@ -75,7 +75,7 @@ export default class App extends Component {
       starsSelect,
       pages: 1
     });
-    this.fetchData();
+    this.fetchReviews();
   }
   
   loadMoreReviews() {
@@ -84,7 +84,7 @@ export default class App extends Component {
       isLoading: true,
       pages: nextPage
     });
-    this.fetchData();
+    this.fetchReviews();
   }
 
   render() {
