@@ -33,7 +33,7 @@ const isLastMonth = (momentDate) => {
   return momentDate.isSameOrAfter(LAST_MONTH);
 }
 
-var dateCategoryChecker = {
+let dateCategoryChecker = {
   "Today": false,
   "Yesterday": false,
   "This Week": false,
@@ -64,9 +64,9 @@ class ReviewTable extends Component {
     }
 
     // parsing and sorting reviews based on increasing time spans
-    var reviews = [];
+    let reviews = [];
     this.props.reviews.forEach((review) => {
-      var dateTime = review.date.split('T');
+      let dateTime = review.date.split('T');
       review.day = dateTime[0];
       review.time = dateTime[1];
       review.stars = parseInt(review.stars, 0);
@@ -74,9 +74,7 @@ class ReviewTable extends Component {
     })
     reviews= _.sortBy(reviews, ['day', 'time']).reverse();
 
-
-
-    var rows = [];
+    let rows = [];
     const addDateCategory = (dateCategory) => {
       if (!dateCategoryChecker[dateCategory]){
         rows.push(<DateCategoryRow date={dateCategory} key={dateCategory}/>);
@@ -84,10 +82,11 @@ class ReviewTable extends Component {
       }
     }
 
-    var lastDateFormat;
+    let lastDateFormat;
     reviews.forEach((review) => {
       const reviewDay = moment(review.day);
 
+      // determine if new date category is needed
       if (isToday(reviewDay)){
         addDateCategory("Today");
       } else if (isYesterday(reviewDay)){

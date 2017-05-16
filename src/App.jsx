@@ -30,7 +30,7 @@ export default class App extends Component {
   }
 
   getFetchURL() {
-    var fetchURL = API_KEY +
+    let fetchURL = API_KEY +
       this.state.starsSelect + '&page=' + this.state.pages;
     if (this.state.filterText !== ''){
       fetchURL = fetchURL + '&q=' + this.state.filterText;
@@ -43,7 +43,7 @@ export default class App extends Component {
     .then(res => res.json())
     .then(data => {
       if (this.state.pages > 1){
-          var additionalReviews = _.concat(this.state.data.reviews, data.reviews);
+          let additionalReviews = _.concat(this.state.data.reviews, data.reviews);
           data.reviews = additionalReviews;
       }
       this.setState({
